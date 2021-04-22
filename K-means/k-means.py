@@ -22,7 +22,7 @@ class Kmeans(object):
         
         self.clusters = self.X[np.random.randint(0,X.shape[0],self.n_clusters)]
         
-    def fit(self,n_iters = 50):
+    def fit(self,n_iters = 10):
         for _ in range(n_iters):
             # first assign class to data points
             D = np.linalg.norm(self.X[:,None,:] - self.clusters,2,-1)
@@ -32,10 +32,32 @@ class Kmeans(object):
                 mask = index == i
                 self.clusters[i] = np.sum(self.X * mask,0)/np.sum(mask)
             
+    def predict(self,x):
+        return np.argmin(np.linalg.norm(self.clusters - x,2,-1))
             
-            
-k = Kmeans(2, X)
-k.fit()
-plt.scatter(X[:,0],X[:,1])
-for i in range(n):
-    plt.scatter(k.clusters[i][0],k.clusters[i][1])
+# k = Kmeans(2, X)
+# k.fit()
+# plt.scatter(X[:,0],X[:,1])
+# for i in range(n):
+#     plt.scatter(k.clusters[i][0],k.clusters[i][1])
+    
+    
+import cv2
+img = cv2.imread('camera-man.png',0)
+img = cv2.resize(img,(100,100))
+h,w = img.shape
+X = np.zeros((h*w,3))
+for i in range(h):
+    for j in range(w):
+        X[i*w + j] = np.array([img[i,j],i,j])
+
+n_clusters = 5
+color = np.linspace(0,255,n_clusters).astype(np.uint8)
+k = Kmeans(n_clusters, X)
+k.fit(50)
+
+mask = img.copy()
+for i in range(h):
+    for j in range(w):
+        mask[i,j] = color[k.predict(np.array([mask[i,j],i,j]))]
+plt.imshow(mask)
