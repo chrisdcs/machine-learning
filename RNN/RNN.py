@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 from utils import ALL_LETTERS, N_LETTERS
 from utils import load_data, letter_to_tensor, line_to_tensor, random_training_example
 
+# torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class RNN(nn.Module):
     # nn.RNN
