@@ -52,12 +52,12 @@ for i in range(h):
         X[i*w + j] = np.array([img[i,j],i,j])
 
 n_clusters = 3
-color = np.linspace(0,255,n_clusters).astype(np.uint8)
+color = np.array([np.random.randint(0,255,3).tolist() for i in range(n_clusters)])
 k = Kmeans(n_clusters, X)
 k.fit(50)
 
-mask = img.copy()
+mask = np.zeros(img.shape+(3,)).astype(np.uint8)
 for i in range(h):
     for j in range(w):
-        mask[i,j] = color[k.predict(np.array([mask[i,j],i,j]))]
+        mask[i,j] = color[k.predict(np.array([img[i,j],i,j]))]
 plt.imshow(mask)
