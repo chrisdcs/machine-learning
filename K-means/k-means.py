@@ -44,6 +44,7 @@ class Kmeans(object):
     
 import cv2
 img = cv2.imread('camera-man.png',0)
+h0,w0 = img.shape
 img = cv2.resize(img,(100,100))
 h,w = img.shape
 X = np.zeros((h*w,3))
@@ -60,4 +61,6 @@ mask = np.zeros(img.shape+(3,)).astype(np.uint8)
 for i in range(h):
     for j in range(w):
         mask[i,j] = color[k.predict(np.array([img[i,j],i,j]))]
+        
+mask = cv2.resize(mask,(h0,w0),interpolation=1)
 plt.imshow(mask)
