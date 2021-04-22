@@ -51,7 +51,7 @@ for i in range(h):
     for j in range(w):
         X[i*w + j] = np.array([img[i,j],i,j])
 
-n_clusters = 5
+n_clusters = 3
 color = np.linspace(0,255,n_clusters).astype(np.uint8)
 k = Kmeans(n_clusters, X)
 k.fit(50)
