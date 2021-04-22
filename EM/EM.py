@@ -10,7 +10,6 @@ And Anderson Acceleration applied for EM
 
 import numpy as np
 import matplotlib.pyplot as plt
-from utils.GMM import GMM
 from sklearn.datasets.samples_generator import make_blobs
 from scipy.stats import multivariate_normal as norm
 
@@ -37,31 +36,20 @@ cov[2] = np.eye(2) * 2
 # generate data
 # mixing coefficients pi for GMM
 
-pi = np.array([1/3,1/3,1/3])
-gmm = GMM(mu,cov,pi)
-X = gmm.sample(N)
-real_gaussian = [norm(mu[i],cov[i]) for i in range(k)]
+pi = np.ones((5))/5
+
 
 # 0. Create dataset
 # Stratch dataset to get ellipsoid 
 
-# X,Y = make_blobs(cluster_std=1.5,random_state=20,n_samples=N,centers=k)
-# X = np.dot(X,np.random.RandomState(0).randn(2,2))
-
-# k=5
-# X,Y = make_blobs(cluster_std=1,random_state=10,n_samples=N,centers=k)
-# X = np.dot(X,np.random.RandomState(0).randn(2,2))
-
-# k = 4
-# X,Y = make_blobs(n_samples = N,centers = 4,cluster_std=0.6,random_state=0)
+k = 4
+X,Y = make_blobs(n_samples = N,centers = 4,cluster_std=0.6,random_state=0)
 
 #%% EM algorithm
 
 # initialize random guess for mean
-# mu_guess = X[np.random.choice(X.shape[0],k,False)]
-mu_guess = np.array([[3,5],
-                     [2,0.4],
-                     [4,3]])
+mu_guess = X[np.random.choice(X.shape[0],k,False)]
+
 
 # initialize random guess for covariance matrix
 shape = k,D,D
@@ -146,5 +134,3 @@ for m,c in zip(mu_guess,cov_guess):
     ax.set_title('Final state')
 
 plt.show()
-#%%
-# plt.plot(log_list)
