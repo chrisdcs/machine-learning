@@ -45,7 +45,15 @@ class Kmeans(object):
 import cv2
 img = cv2.imread('camera-man.png',0)
 h0,w0 = img.shape
-img = cv2.resize(img,(100,100))
+
+"""
+# it is like normalization, if the image size is too large, spatial coordinates 
+# will take over in the 2 norm instead of intensity
+# But simply normalize without resizing makes computation heavy, therefore the 
+# image resize idea.
+"""
+ratio = .3
+img = cv2.resize(img,(int(img.shape[0]*ratio),int(img.shape[1]*ratio)))
 h,w = img.shape
 X = np.zeros((h*w,3))
 for i in range(h):
